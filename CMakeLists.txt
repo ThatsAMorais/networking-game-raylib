@@ -23,11 +23,12 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
   endif()
 endif()
 
-# Include directories for ENet, INI, and profiles
+# Include directories for ENet, INI, profiles, uuid_wrapper, and networking
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/third_party/inih)
 include_directories(${CMAKE_SOURCE_DIR}/src/profiles)
 include_directories(${CMAKE_SOURCE_DIR}/src/uuid_wrapper)
+include_directories(${CMAKE_SOURCE_DIR}/src/networking)
 
 # Add ENet library
 set(ENET_LIB_PATH ${CMAKE_SOURCE_DIR}/lib)
@@ -35,7 +36,7 @@ find_library(ENET_LIBRARY NAMES enet64 PATHS ${ENET_LIB_PATH} REQUIRED)
 
 # Our Project - Client
 add_executable(client)
-file(GLOB_RECURSE CLIENT_SOURCE_FILES CONFIGURE_DEPENDS src/client/*.c src/profiles/*.c src/uuid_wrapper/*.c)
+file(GLOB_RECURSE CLIENT_SOURCE_FILES CONFIGURE_DEPENDS src/client/*.c src/profiles/*.c src/uuid_wrapper/*.c src/networking/*.c)
 target_sources(client PRIVATE ${CLIENT_SOURCE_FILES})
 set_target_properties(client PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/client)
@@ -53,7 +54,7 @@ add_custom_command(TARGET client POST_BUILD
 
 # Our Project - Server
 add_executable(server)
-file(GLOB_RECURSE SERVER_SOURCE_FILES CONFIGURE_DEPENDS src/server/*.c third_party/inih/*.c)
+file(GLOB_RECURSE SERVER_SOURCE_FILES CONFIGURE_DEPENDS src/server/*.c src/networking/*.c src/uuid_wrapper/*.c third_party/inih/*.c)
 target_sources(server PRIVATE ${SERVER_SOURCE_FILES})
 set_target_properties(server PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/server)

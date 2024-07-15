@@ -6,6 +6,7 @@
 //----------------------------------------------------------------------------------
 static int framesCounter = 0;
 static int finishScreen = 0;
+static const char* gameTitle = "Networking Game"; // Game title
 
 //----------------------------------------------------------------------------------
 // Title Screen Functions Definition
@@ -37,9 +38,14 @@ void DrawTitleScreen(void)
 {
     // Draw TITLE screen here!
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), GREEN);
-    Vector2 pos = { 20, 10 };
-    DrawTextEx(font, "TITLE SCREEN", pos, font.baseSize*3.0f, 4, DARKGREEN);
-    DrawText("PRESS ENTER or TAP to BEGIN", 120, 220, 20, DARKGREEN);
+
+    // Draw game title
+    Vector2 titlePos = { (float)(GetScreenWidth() / 2 - (int)(MeasureTextEx(font, gameTitle, (float)(font.baseSize * 3.0f), 4).x / 2)), (float)(GetScreenHeight() / 3) };
+    DrawTextEx(font, gameTitle, titlePos, (float)(font.baseSize * 3.0f), 4, DARKGREEN);
+
+    // Draw instructions
+    Vector2 instructionPos = { (float)(GetScreenWidth() / 2 - MeasureText("PRESS ENTER or TAP to BEGIN", 20) / 2), (float)(GetScreenHeight() * 2 / 3) };
+    DrawText("PRESS ENTER or TAP to BEGIN", (int)instructionPos.x, (int)instructionPos.y, 20, DARKGREEN);
 }
 
 // Title Screen Unload logic

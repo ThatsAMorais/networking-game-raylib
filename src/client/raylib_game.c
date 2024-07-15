@@ -1,6 +1,6 @@
 #include "raylib.h"
 #include "screens.h"
-#include "enet_wrapper.h"
+#include "networking.h" // Include the new networking header
 #include "player_profile.h"
 #include <stdio.h>
 #include <string.h>
@@ -16,8 +16,8 @@ Sound fxCoin = { 0 };
 char connectionMessage[256];  // To store the connection status message
 int countdown = 10;           // Countdown for starting the game
 bool isConnected = false;     // Connection status
-void* client = NULL;          // ENet client
-void* peer = NULL;            // ENet peer
+Client client = NULL;         // ENet client
+Peer peer = NULL;             // ENet peer
 
 PlayerProfile profile;
 
@@ -324,33 +324,23 @@ static void UpdateDrawFrame(void)
 
 // Networking initialization
 static void InitNetworking() {
-    if (!enet_wrapper_initialize()) {
+    if (!initializeNetworking(&client, &peer, "127.0.0.1", 56841)) {
         snprintf(connectionMessage, sizeof(connectionMessage), "Failed to initialize ENet");
-        return;
-    }
-
-    client = enet_wrapper_create_client();
-    if (client == NULL) {
-        snprintf(connectionMessage, sizeof(connectionMessage), "Failed to create ENet client");
-        return;
-    }
-
-    peer = enet_wrapper_connect(client, "127.0.0.1", 56841);
-    if (peer == NULL) {
-        snprintf(connectionMessage, sizeof(connectionMessage), "Failed to connect to server");
         return;
     }
 
     isConnected = true;
     snprintf(connectionMessage, sizeof(connectionMessage), "Connected to server");
+
+    // Send join message
+    sendMessage(peer, MSG_TYPE_JOIN, profile.username);
 }
 
 // Networking cleanup
 static void CleanupNetworking() {
     if (isConnected) {
-        enet_wrapper_disconnect(peer);
-        enet_wrapper_destroy_client(client);
-        enet_wrapper_deinitialize();
+        sendMessage(peer, MSG_TYPE_LEAVE, profile.username);
+        cleanupNetworking(client, peer);
         isConnected = false;
     }
 }
