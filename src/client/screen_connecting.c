@@ -81,9 +81,10 @@ void DrawConnectingScreen(void)
 // Connecting Screen Unload logic
 void UnloadConnectingScreen(void)
 {
-    enet_wrapper_disconnect(peer);
-    enet_wrapper_destroy_client(client);
-    enet_wrapper_deinitialize();
+    // Comment out these lines to keep the connection
+    // enet_wrapper_disconnect(peer);
+    // enet_wrapper_destroy_client(client);
+    // enet_wrapper_deinitialize();
 }
 
 // Connecting Screen should finish?

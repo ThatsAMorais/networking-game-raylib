@@ -64,7 +64,9 @@ int main(int argc, char **argv) {
         runServer(port);
         return 0;
     }
-
+     
     printf("Usage: %s runServer\n", argv[0]);
+    runServer(port);
+
     return 0;
 }

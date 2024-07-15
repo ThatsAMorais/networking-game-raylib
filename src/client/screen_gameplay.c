@@ -1,30 +1,8 @@
-/**********************************************************************************************
-*
-*   raylib - Advance Game template
-*
-*   Gameplay Screen Functions Definitions (Init, Update, Draw, Unload)
-*
-*   Copyright (c) 2014-2022 Ramon Santamaria (@raysan5)
-*
-*   This software is provided "as-is", without any express or implied warranty. In no event
-*   will the authors be held liable for any damages arising from the use of this software.
-*
-*   Permission is granted to anyone to use this software for any purpose, including commercial
-*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
-*
-*     1. The origin of this software must not be misrepresented; you must not claim that you
-*     wrote the original software. If you use this software in a product, an acknowledgment
-*     in the product documentation would be appreciated but is not required.
-*
-*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
-*     as being the original software.
-*
-*     3. This notice may not be removed or altered from any source distribution.
-*
-**********************************************************************************************/
-
 #include "raylib.h"
 #include "screens.h"
+#include "enet_wrapper.h"
+#include <stdio.h>
+#include <string.h>
 
 //----------------------------------------------------------------------------------
 // Module Variables Definition (local)
@@ -39,7 +17,6 @@ static int finishScreen = 0;
 // Gameplay Screen Initialization logic
 void InitGameplayScreen(void)
 {
-    // TODO: Initialize GAMEPLAY screen variables here!
     framesCounter = 0;
     finishScreen = 0;
 }
@@ -47,9 +24,25 @@ void InitGameplayScreen(void)
 // Gameplay Screen Update logic
 void UpdateGameplayScreen(void)
 {
-    // TODO: Update GAMEPLAY screen variables here!
+    framesCounter++;
 
-    // Press enter or tap to change to ENDING screen
+    // Send test packet every second
+    if (framesCounter % 60 == 0)
+    {
+        const char* testMessage = "Test packet from client";
+        enet_wrapper_send(peer, testMessage);
+    }
+
+    // Service the connection and process any received packets
+    bool is_connected;
+    enet_wrapper_service(client, 0, &is_connected);
+    const char* received_data = enet_wrapper_receive(client);
+    if (received_data)
+    {
+        printf("Received: %s\n", received_data);
+    }
+
+    // Check if the user wants to end the game
     if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
     {
         finishScreen = 1;
@@ -60,7 +53,6 @@ void UpdateGameplayScreen(void)
 // Gameplay Screen Draw logic
 void DrawGameplayScreen(void)
 {
-    // TODO: Draw GAMEPLAY screen here!
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), PURPLE);
     Vector2 pos = { 20, 10 };
     DrawTextEx(font, "GAMEPLAY SCREEN", pos, font.baseSize*3.0f, 4, MAROON);
@@ -70,7 +62,7 @@ void DrawGameplayScreen(void)
 // Gameplay Screen Unload logic
 void UnloadGameplayScreen(void)
 {
-    // TODO: Unload GAMEPLAY screen variables here!
+    // Unload GAMEPLAY screen variables here!
 }
 
 // Gameplay Screen should finish?

@@ -39,6 +39,16 @@ set_target_properties(client PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/client)
 target_link_libraries(client raylib ${ENET_LIBRARY} ws2_32 winmm)
 
+# Define the source and destination directories for resources
+set(RESOURCES_SOURCE_DIR ${CMAKE_SOURCE_DIR}/resources)
+set(RESOURCES_DEST_DIR ${CMAKE_BINARY_DIR}/bin/client/resources)
+
+# Add a post-build step to copy the resources
+add_custom_command(TARGET client POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${RESOURCES_SOURCE_DIR} ${RESOURCES_DEST_DIR}
+)
+
 # Our Project - Server
 add_executable(server)
 file(GLOB_RECURSE SERVER_SOURCE_FILES CONFIGURE_DEPENDS src/server/*.c third_party/inih/*.c)

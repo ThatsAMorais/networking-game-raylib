@@ -1,4 +1,3 @@
-// enet_wrapper.h
 #ifndef ENET_WRAPPER_H
 #define ENET_WRAPPER_H
 
@@ -16,6 +15,8 @@ void enet_wrapper_destroy_client(void* client);
 void* enet_wrapper_connect(void* client, const char* address, unsigned short port);
 void enet_wrapper_disconnect(void* peer);
 bool enet_wrapper_service(void* client, int timeout, bool* is_connected);
+void enet_wrapper_send(void* peer, const char* data);
+const char* enet_wrapper_receive(void* client);
 
 #ifdef __cplusplus
 }
