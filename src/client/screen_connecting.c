@@ -19,7 +19,7 @@ void InitConnectingScreen(void)
 {
     framesCounter = 0;
     finishScreen = 0;
-    countdown = 10;
+    countdown = 3;
     snprintf(connectionMessage, sizeof(connectionMessage), "Connecting to Server...");
 
     if (!enet_wrapper_initialize())
@@ -81,10 +81,6 @@ void DrawConnectingScreen(void)
 // Connecting Screen Unload logic
 void UnloadConnectingScreen(void)
 {
-    // Comment out these lines to keep the connection
-    // enet_wrapper_disconnect(peer);
-    // enet_wrapper_destroy_client(client);
-    // enet_wrapper_deinitialize();
 }
 
 // Connecting Screen should finish?

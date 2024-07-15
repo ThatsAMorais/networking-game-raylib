@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <enet/enet.h>
 #include "config.h"
+#include "game_logic.h"
 
 void runServer(int port) {
     if (enet_initialize() != 0) {
@@ -25,6 +27,9 @@ void runServer(int port) {
 
     printf("Server started on port %d\n", port);
 
+    GameState gameState;
+    initGameState(&gameState);
+
     while (1) {
         while (enet_host_service(server, &event, 0) > 0) {
             switch (event.type) {
@@ -37,6 +42,7 @@ void runServer(int port) {
                            event.packet->data,
                            event.peer->address.host,
                            event.peer->address.port);
+                    processPacket(&gameState, event.packet->data, event.packet->dataLength);
                     enet_packet_destroy(event.packet);
                     break;
                 case ENET_EVENT_TYPE_DISCONNECT:
@@ -64,7 +70,7 @@ int main(int argc, char **argv) {
         runServer(port);
         return 0;
     }
-     
+
     printf("Usage: %s runServer\n", argv[0]);
     runServer(port);
 

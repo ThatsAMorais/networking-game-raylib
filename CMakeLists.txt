@@ -23,9 +23,11 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
   endif()
 endif()
 
-# Include directories for ENet and INI
+# Include directories for ENet, INI, and profiles
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/third_party/inih)
+include_directories(${CMAKE_SOURCE_DIR}/src/profiles)
+include_directories(${CMAKE_SOURCE_DIR}/src/uuid_wrapper)
 
 # Add ENet library
 set(ENET_LIB_PATH ${CMAKE_SOURCE_DIR}/lib)
@@ -33,7 +35,7 @@ find_library(ENET_LIBRARY NAMES enet64 PATHS ${ENET_LIB_PATH} REQUIRED)
 
 # Our Project - Client
 add_executable(client)
-file(GLOB_RECURSE CLIENT_SOURCE_FILES CONFIGURE_DEPENDS src/client/*.c)
+file(GLOB_RECURSE CLIENT_SOURCE_FILES CONFIGURE_DEPENDS src/client/*.c src/profiles/*.c src/uuid_wrapper/*.c)
 target_sources(client PRIVATE ${CLIENT_SOURCE_FILES})
 set_target_properties(client PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/client)

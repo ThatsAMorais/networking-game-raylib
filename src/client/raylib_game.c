@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "screens.h"
 #include "enet_wrapper.h"
+#include "player_profile.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -17,6 +18,8 @@ int countdown = 10;           // Countdown for starting the game
 bool isConnected = false;     // Connection status
 void* client = NULL;          // ENet client
 void* peer = NULL;            // ENet peer
+
+PlayerProfile profile;
 
 //----------------------------------------------------------------------------------
 // Local Variables Definition (local to this module)
@@ -42,6 +45,9 @@ static void DrawTransition(void);           // Draw transition effect (full-scre
 
 static void UpdateDrawFrame(void);          // Update and draw one frame
 
+static void InitNetworking();               // Initialize networking
+static void CleanupNetworking();            // Cleanup networking
+
 //----------------------------------------------------------------------------------
 // Main entry point
 //----------------------------------------------------------------------------------
@@ -60,6 +66,15 @@ int main(void)
 
     SetMusicVolume(music, 1.0f);
     PlayMusicStream(music);
+
+    // Load player profile
+    if (!loadPlayerProfile("profile.ini", &profile)) {
+        generateNewProfile(&profile);
+        savePlayerProfile("profile.ini", &profile);
+    }
+
+    // Initialize networking
+    InitNetworking();
 
     // Setup and init first screen
     currentScreen = LOGO;
@@ -97,6 +112,8 @@ int main(void)
     UnloadFont(font);
     UnloadMusicStream(music);
     UnloadSound(fxCoin);
+
+    CleanupNetworking();    // Cleanup networking
 
     CloseAudioDevice();     // Close audio context
 
@@ -303,4 +320,37 @@ static void UpdateDrawFrame(void)
 
     EndDrawing();
     //----------------------------------------------------------------------------------
+}
+
+// Networking initialization
+static void InitNetworking() {
+    if (!enet_wrapper_initialize()) {
+        snprintf(connectionMessage, sizeof(connectionMessage), "Failed to initialize ENet");
+        return;
+    }
+
+    client = enet_wrapper_create_client();
+    if (client == NULL) {
+        snprintf(connectionMessage, sizeof(connectionMessage), "Failed to create ENet client");
+        return;
+    }
+
+    peer = enet_wrapper_connect(client, "127.0.0.1", 56841);
+    if (peer == NULL) {
+        snprintf(connectionMessage, sizeof(connectionMessage), "Failed to connect to server");
+        return;
+    }
+
+    isConnected = true;
+    snprintf(connectionMessage, sizeof(connectionMessage), "Connected to server");
+}
+
+// Networking cleanup
+static void CleanupNetworking() {
+    if (isConnected) {
+        enet_wrapper_disconnect(peer);
+        enet_wrapper_destroy_client(client);
+        enet_wrapper_deinitialize();
+        isConnected = false;
+    }
 }

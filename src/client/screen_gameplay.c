@@ -17,6 +17,7 @@ static int finishScreen = 0;
 // Gameplay Screen Initialization logic
 void InitGameplayScreen(void)
 {
+    printf("Initializing Gameplay Screen...\n");
     framesCounter = 0;
     finishScreen = 0;
 }
@@ -30,12 +31,19 @@ void UpdateGameplayScreen(void)
     if (framesCounter % 60 == 0)
     {
         const char* testMessage = "Test packet from client";
+        printf("Sending test packet: %s\n", testMessage);
         enet_wrapper_send(peer, testMessage);
     }
 
     // Service the connection and process any received packets
     bool is_connected;
     enet_wrapper_service(client, 0, &is_connected);
+    if (!is_connected) {
+        printf("Lost connection to the server.\n");
+        finishScreen = 1;  // Indicate we should exit the gameplay screen
+        return;
+    }
+
     const char* received_data = enet_wrapper_receive(client);
     if (received_data)
     {
@@ -45,6 +53,7 @@ void UpdateGameplayScreen(void)
     // Check if the user wants to end the game
     if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
     {
+        printf("User requested to finish the game.\n");
         finishScreen = 1;
         PlaySound(fxCoin);
     }
@@ -62,6 +71,7 @@ void DrawGameplayScreen(void)
 // Gameplay Screen Unload logic
 void UnloadGameplayScreen(void)
 {
+    printf("Unloading Gameplay Screen...\n");
     // Unload GAMEPLAY screen variables here!
 }
 
