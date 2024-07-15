@@ -1,75 +1,64 @@
------------------------------------
+## Networking Game with Raylib
 
-_DISCLAIMER:_
+Welcome to **Networking Game with Raylib**!
 
-Welcome to **raylib game template**!
+This project is a multiplayer game built using the Raylib library and ENet for networking. The game features multiple screens, including an intro screen, a networking screen for connecting to a server, and a gameplay screen. This README provides an overview of the game, its features, and how to set it up.
 
-This template provides a base structure to start developing a small raylib game in plain C. The repo is also pre-configured with a default `LICENSE` (zlib/libpng) and a `README.md` (this one) to be properly filled by users. Feel free to change the LICENSE as required.
+## Getting Started
 
-All the sections defined by `$(Data to Fill)` are expected to be edited and filled properly. It's recommended to delete this disclaimer message after editing this `README.md` file.
-
-This template has been created to be used with raylib (www.raylib.com) and it's licensed under an unmodified zlib/libpng license.
-
-_Copyright (c) 2014-2024 Ramon Santamaria ([@raysan5](https://twitter.com/raysan5))_
-
------------------------------------
-## Getting Started with this template
-
-You can use this templates in some ways. Using Visual Studio, using CMake or make your own build setup. This repository come with Visual Studio and CMake already setuped.
-
-Chose one of the follow setup, that fit in you development enviroment.
+You can set up this project using Visual Studio or CMake. The repository comes with both setups pre-configured.
 
 ### Visual Studio
 
-- After extracting the zip, the parent folder `raylib-game-template` should exist in the same directory as `raylib` itself.  So your file structure should look like this:
+- After extracting the zip, the parent folder `networking-game-raylib` should exist in the same directory as `raylib` itself. Your file structure should look like this:
     - Some parent directory
         - `raylib`
             - the contents of https://github.com/raysan5/raylib
-        - `raylib-game-template`
-            - this `README.md` and all other raylib-game-template files
-- If using Visual Studio, open projects/VS2022/raylib-game-template.sln
-- Select on `raylib_game` in the solution explorer, then in the toolbar at the top, click `Project` > `Set as Startup Project`
-- Now you're all set up!  Click `Local Windows Debugger` with the green play arrow and the project will run.
+        - `networking-game-raylib`
+            - this `README.md` and all other project files
+- Open `projects/VS2022/networking-game-raylib.sln`
+- Select `raylib_game` in the solution explorer, then in the toolbar at the top, click `Project` > `Set as Startup Project`
+- Click `Local Windows Debugger` with the green play arrow to run the project.
 
 ### CMake
 
 - Extract the zip of this project
-- Type the follow command:
+- Run the following command:
 
 ```sh
 cmake -S . -B build
 ```
 
-> if you want with debug symbols put the flag `-DCMAKE_BUILD_TYPE=Debug`
+> To include debug symbols, add the flag `-DCMAKE_BUILD_TYPE=Debug`
 
-- After CMake config you project build:
+- Build the project:
 
 ```sh
 cmake --build build
 ```
 
-- Inside the build folder are another folder (named the same as the project name on CMakeLists.txt) with the executable and resources folder.
+- The build folder will contain another folder (named after the project) with the executable and resources folder.
 
-## $(Game Title)
+## Networking Game with Raylib
 
-![$(Game Title)](screenshots/screenshot000.png "$(Game Title)")
+![Networking Game with Raylib](screenshots/screenshot000.png "Networking Game with Raylib")
 
 ### Description
 
-$(Your Game Description)
+This is a multiplayer game built using Raylib for graphics and ENet for networking. The game includes an intro screen, a networking screen where players connect to a server, and a gameplay screen where the actual game is played. The networking screen handles the connection setup, and the connecting screen displays the connection status and transitions to the gameplay screen upon successful connection.
 
 ### Features
 
- - $(Game Feature 01)
- - $(Game Feature 02)
- - $(Game Feature 03)
+ - Multiplayer support with ENet
+ - Seamless screen transitions
+ - Interactive intro screen
+ - Countdown to game start after connection
 
 ### Controls
 
 Keyboard:
- - $(Game Control 01)
- - $(Game Control 02)
- - $(Game Control 03)
+ - Enter: Start game / Connect to server
+ - ESC: Exit game
 
 ### Screenshots
 
@@ -77,20 +66,16 @@ _TODO: Show your game to the world, animated GIFs recommended!._
 
 ### Developers
 
- - $(Developer 01) - $(Role/Tasks Developed)
- - $(Developer 02) - $(Role/Tasks Developed)
- - $(Developer 03) - $(Role/Tasks Developed)
+ - Alex Morais - Game Development, Networking Integration
 
 ### Links
 
- - YouTube Gameplay: $(YouTube Link)
- - itch.io Release: $(itch.io Game Page)
- - Steam Release: $(Steam Game Page)
+ - YouTube Gameplay: _TODO_
+ - itch.io Release: _TODO_
+ - Steam Release: _TODO_
 
 ### License
 
-This game sources are licensed under an unmodified zlib/libpng license, which is an OSI-certified, BSD-like license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
+This game is licensed under an unmodified zlib/libpng license, which is an OSI-certified, BSD-like license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
 
-$(Additional Licenses)
-
-*Copyright (c) $(Year) $(User Name) ($(User Twitter/GitHub Name))*
+*Copyright (c) 2024 Alex Morais*
